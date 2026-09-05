@@ -1,5 +1,7 @@
 # Get Started: Custom Backend Module
 
+[English](README.md) | [Tiếng Việt](README.vi.md)
+
 A complete TypeScript sample that accepts a `leadId`, reads one Cogover Lead as
 the current caller, and returns `{ lead }`. The same `src/main.ts` runs locally
 and in Cogover. No credentials or real workspace/Lead data are included.
