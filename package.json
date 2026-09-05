@@ -1,0 +1,30 @@
+{
+  "name": "get-started-custom-backend-module",
+  "version": "1.0.0",
+  "private": true,
+  "license": "MIT",
+  "description": "A complete Cogover TypeScript backend sample that reads one lead.",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "prestart": "npm run typecheck",
+    "start": "node --import tsx local/cli.ts --entry ./src/main.ts",
+    "dev": "nodemon --watch src --watch local --ext ts --signal SIGTERM --exec \"npm run start\"",
+    "build": "npm run typecheck",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "node --import tsx --test test/*.test.ts",
+    "check": "npm run typecheck && npm test",
+    "test:live": "node scripts/check-live.mjs"
+  },
+  "dependencies": {
+    "@cogover/sdk": "0.5.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "nodemon": "^3.1.14",
+    "tsx": "^4.20.0",
+    "typescript": "~5.9.3"
+  }
+}
