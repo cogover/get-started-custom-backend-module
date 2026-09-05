@@ -25,13 +25,14 @@ Download/clone this repository, then open its directory containing `package.json
 ```bash
 npm ci
 npm run check
-npm install --global @cogover/dev-cli@0.10.0
+npm install --global @cogover/dev-cli
 cogover-dev --version
 ```
 
 `npm run check` type-checks source, runner and tests, then runs credential-free
 unit and HTTP integration tests. These use synthetic data and do not prove
-access to your workspace. CLI 0.10.0 is the tested version.
+access to your workspace. The CLI install command uses the latest version
+published to npm.
 
 ## 2. Configure your Project
 
