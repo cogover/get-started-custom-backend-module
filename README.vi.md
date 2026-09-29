@@ -10,6 +10,7 @@ Workspace/Lead thật.
 ## Yêu cầu
 
 - Node.js 20+ và npm (khuyến nghị Node.js 22.12+ cho cả hai sample project).
+- TypeScript 5.0+, phiên bản mà `@cogover/sdk` 0.13 yêu cầu; `npm ci` cài sẵn cùng sample.
 - Workspace Cogover có Object với slug `lead` và một Lead đã tồn tại để đọc.
 - Project Custom Backend Module, thường có slug `get_lead`.
 - Chính sách Project và quyền của caller cho phép đọc `lead` cùng các field
@@ -93,7 +94,9 @@ curl --fail-with-body -X POST 'http://127.0.0.1:3100/api/v1/ts-projects/get_lead
 
 Dùng slug thực tế trong URL. Response local thành công có dạng `{ "lead": ... }`.
 Bản ghi gồm `id`, `fields` và `system`; metadata hệ thống và giá trị field tùy
-thuộc Workspace. Input không hợp lệ hoặc trống trả HTTP 400. Router SDK trả 404
+thuộc Workspace. `fields` chỉ chứa năm field trong `READ_FIELDS`: mọi lệnh đọc
+đều phải nêu các field cần trả về. `system.createdBy.name` là chuỗi rỗng (`""`)
+vì sample không mở rộng lookup bằng `expandLookups`. Input không hợp lệ hoặc trống trả HTTP 400. Router SDK trả 404
 cho method/path chưa đăng ký (kể cả GET tại route chỉ đăng ký POST này).
 
 Bạn cũng có thể chạy smoke test với dữ liệu thật khi server local đang chạy:
@@ -202,6 +205,10 @@ session production có cùng quyền.
   đã bị vô hiệu hóa. 403: kiểm tra chính sách Project, Project key và quyền caller.
 - Field không tồn tại: đối chiếu schema Object với `workspace.d.ts` và
   `READ_FIELDS`. Khai báo TypeScript không thể tự sửa schema trên server.
+- `fields is required: pass field slugs or "*"`: mọi lệnh `records.get`,
+  `records.getMany` và `records.list` phải truyền `fields`, là danh sách slug
+  field hoặc `"*"` (`@cogover/sdk` 0.13.0+). Version đã publish bằng SDK cũ mà
+  đọc không có `fields` cũng lỗi như vậy: sửa code rồi publish lại.
 - Port đã được dùng: chọn `COGOVER_LOCAL_PORT` khác và cập nhật URL curl.
 - Dependency backend chỉ dành cho runner phải nằm ngoài `src/`; code deploy
   lên Cogover phải dùng các API mà runtime hỗ trợ.

@@ -7,7 +7,7 @@ import main from "../src/main.js";
 const invocation: InvocationContext = {
   identity: "user",
   workspace: { id: "WORKSPACE_SAMPLE_ONLY" },
-  user: { accountId: "USER_SAMPLE_ONLY", membership: {} },
+  user: { accountId: "USER_SAMPLE_ONLY", membership: { isSuperAdmin: false, roles: [] } },
 };
 
 async function withServer(handler: SandboxHandler, run: (url: string) => Promise<void>) {

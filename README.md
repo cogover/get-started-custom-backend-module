@@ -9,6 +9,7 @@ and in Cogover. No credentials or real workspace/Lead data are included.
 ## Requirements
 
 - Node.js 20+ and npm (Node.js 22.12+ recommended for both sample projects).
+- TypeScript 5.0+, required by `@cogover/sdk` 0.13; `npm ci` installs it with the sample.
 - A Cogover workspace with an Object slug `lead`, and an existing Lead to read.
 - A Custom Backend Module Project, normally with slug `get_lead`.
 - Project policy and caller permissions allowing read access to `lead` and
@@ -92,7 +93,9 @@ curl --fail-with-body -X POST 'http://127.0.0.1:3100/api/v1/ts-projects/get_lead
 
 Use your actual slug in the URL. A successful local response is `{ "lead": ... }`.
 The record contains `id`, `fields` and `system`; system metadata and field values
-depend on your workspace. Invalid/blank input returns HTTP 400. The SDK router
+depend on your workspace. `fields` holds only the five fields of `READ_FIELDS`:
+every read names the fields it returns. `system.createdBy.name` is empty (`""`)
+because the sample does not expand lookups with `expandLookups`. Invalid/blank input returns HTTP 400. The SDK router
 returns 404 for an unregistered method/path (including GET on this POST route).
 
 You can also run the live smoke test while the local server is running:
@@ -202,6 +205,10 @@ production session has the same permissions.
   Development Session. 403: check Project policy, Project key and caller permissions.
 - Unknown field: compare your Object schema with `workspace.d.ts` and
   `READ_FIELDS`. A TypeScript declaration alone cannot fix a server schema.
+- `fields is required: pass field slugs or "*"`: every `records.get`,
+  `records.getMany` and `records.list` must pass `fields`, a list of field slugs
+  or `"*"` (`@cogover/sdk` 0.13.0+). A version published with an older SDK that
+  reads without `fields` fails the same way: update it and publish again.
 - Port in use: choose another `COGOVER_LOCAL_PORT` and update the curl URL.
 - Backend dependencies that are only used by the runner must stay outside
   `src/`; code deployed to Cogover must use supported runtime APIs.
